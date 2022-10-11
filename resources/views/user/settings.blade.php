@@ -16,7 +16,6 @@
 
             <label class="block">Password</label>
             <input class="block w-full border border-gray-300 rounded-md text-sm py-2 px-3" type="password" placeholder="*************" readonly>
-            <p class="text-sm text-right hover:text-[#70ce91]"><a href="">Edit</a></p>
         
             <input class="block mx-auto rounded-md text-sm py-2 px-4 bg-[#70ce91] text-white cursor-pointer hover:bg-[#3b9b5c]" type="submit" name="" value="Update">
         </form>
