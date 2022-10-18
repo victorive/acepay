@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Http\Controllers\Controller;
+use App\Events\UserLogin;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 
 class LoginController extends Controller
 {
@@ -21,10 +23,15 @@ class LoginController extends Controller
 
         if(!auth()->attempt($request->only(['email', 'password']), $request->remember)){
 
-            return back()->with('message', 'Incorrect login credentials, please try again!');
+            return back()->with('failed', 'Incorrect login credentials, please try again!');
         }
 
-        return redirect()->route('dashboard');
+        $user = Auth::user();
+
+        $user->generateToken();
+        event(new UserLogin($user));
+
+        return redirect()->route('verify');
     }
 
     public function logout()

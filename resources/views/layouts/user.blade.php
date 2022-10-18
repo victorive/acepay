@@ -25,7 +25,8 @@
                     </button>
 
                     <div id="profile-menu" class="absolute bg-white hidden flex-col rounded top-0 right-0 bottom-auto left-auto m-0 -translate-x-[20px] translate-y-[45px] border border-gray-200 w-40 p-2 z-10">
-                        <p class="w-full font-bold text-xs uppercase tracking-widest">Test Test</p>
+                        <p class="w-full font-bold text-xs uppercase tracking-widest">{{ auth()->user()->firstname }} {{ auth()->user()->lastname }}</p>
+                        <a href="{{ route('dashboard') }}" class="w-full relative flex items-center font-medium text-sm px-1 py-2 rounded hover:bg-[#e3f5e9]">Dashboard</a>
                         <a href="{{ route('profile') }}" class="w-full relative flex items-center font-medium text-sm px-1 py-2 rounded hover:bg-[#e3f5e9]">Profile</a>
                         <a href="{{ route('notifications') }}" class="w-full relative flex items-center font-medium text-sm px-1 py-2 rounded hover:bg-[#e3f5e9]">Notifications</a>
                         <a href="{{ route('settings') }}" class="w-full relative flex items-center font-medium text-sm px-1 py-2 rounded hover:bg-[#e3f5e9]">Settings</a>
