@@ -17,13 +17,7 @@ class User extends Authenticatable
      *
      * @var array<int, string>
      */
-    protected $fillable = [
-        'firstname',
-        'lastname',
-        'email',
-        'balance',
-        'password',
-    ];
+    protected $guarded = ['id'];
 
     /**
      * The attributes that should be hidden for serialization.
@@ -31,6 +25,7 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $hidden = [
+        'token',
         'password',
         'remember_token',
     ];
@@ -43,4 +38,25 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function transactions()
+    {
+        $this->hasMany(Transaction::class);
+    }
+
+    public function generateToken()
+    {
+        $this->timestamps = false;
+        $this->token = rand(100000, 999999);
+        $this->token_expires_at = now()->addMinutes(10);
+        $this->save();
+    }
+
+    public function resetToken()
+    {
+        $this->timestamps = false;
+        $this->token = null;
+        $this->token_expires_at = null;
+        $this->save();
+    }
 }

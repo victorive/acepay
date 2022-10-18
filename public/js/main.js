@@ -3,12 +3,17 @@ let buttons = document.querySelectorAll('#payment-buttons a');
 buttons.forEach(function(toggle) {
     toggle.addEventListener('click', function(e) {
         e.preventDefault();
-        e.target.classList.add('active:bg-[#3b9b5c]');
 
         let option = this.getAttribute('href');
         let buttonoptions = document.querySelector('#button-options');
 
         for (let i = 0; i < buttonoptions.children.length; i++){
+
+            if (e.target.matches('a')) {
+                e.preventDefault();
+                buttons.forEach(link => link.classList.remove('active:bg-[#3b9b5c]'));
+                e.target.classList.add('active:bg-[#3b9b5c]');
+            }
 
             buttonoptions.children[i].classList.remove('hidden');
 

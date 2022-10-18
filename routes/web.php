@@ -1,9 +1,12 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Auth\ForgotPasswordController;
+use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\Auth\TwoFactorController;
 use App\Http\Controllers\User\DashboardController;
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,13 +21,23 @@ use App\Http\Controllers\User\DashboardController;
 
 Route::view('/', 'index')->name('home');
 
-Route::get('/register', [RegisterController::class, 'index'])->name('register');
-Route::post('register', [RegisterController::class, 'register']);
-Route::get('/login', [LoginController::class, 'index'])->name('login');
-Route::post('/login', [LoginController::class, 'login']);
-Route::get('/forgotpassword', [LoginController::class, 'forgotpassword'])->name('forgotpassword');
+Route::middleware('guest')->group(function(){
+    Route::get('/register', [RegisterController::class, 'index'])->name('register');
+    Route::post('register', [RegisterController::class, 'register']);
 
-Route::middleware(['auth'])->group(function() {
+    Route::get('/login', [LoginController::class, 'index'])->name('login');
+    Route::post('/login', [LoginController::class, 'login']);
+
+    Route::get('/forgotpassword', [ForgotPasswordController::class, 'index'])->name('forgotpassword');
+    Route::post('/forgotpassword', [ForgotPasswordController::class, 'forgotPassword']);
+    Route::get('/reset-password/{token}', [ForgotPasswordController::class, 'changePasswordForm'])->name('password.reset');
+    Route::post('/reset-password', [ForgotPasswordController::class, 'updatePassword']);
+});
+
+Route::middleware(['auth', 'twofactor'])->group(function() {
+    Route::get('/verify', [TwoFactorController::class, 'index'])->name('verify');
+    Route::get('/verify/resend', [TwoFactorController::class, 'resendToken'])->name('verify.resend');
+    Route::post('/verify', [TwoFactorController::class, 'verifyToken']);
 
     Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
@@ -32,24 +45,10 @@ Route::middleware(['auth'])->group(function() {
         Route::get('/dashboard', 'index')->name('dashboard');
         Route::get('/profile', 'profile')->name('profile');
         Route::get('/notifications', 'notifications')->name('notifications');
-        // Route::get('/2FA', 'twofa')->name('twofa');
-        // Route::get('/failed', 'failed')->name('failed');
-        // Route::get('/success', 'success')->name('success');
+        Route::get('/setings', 'settings')->name('settings');
+        Route::put('/settings', 'updateProfile');
     });
 
-    Route::get('/settings', [SettingsController::class, 'index'])->name('settings');
-});
-
-Route::controller(AdminController::class)->prefix('admin')->name('admin.')->group(function() {
-    Route::get('/dashboard', 'index')->name('admin-dashboard');
-    Route::get('/users', 'viewUsers')->name('view-users');
-    Route::get('/deposits', 'viewDeposits')->name('view-deposits');
-    Route::get('/withdrawals', 'viewWithdrawals')->name('view-withdrawals');
-    Route::get('/received', 'viewReceived')->name('view-received');
-    Route::get('/sent', 'viewSent')->name('view-sent');
-    Route::get('/transactions', 'viewTransactions')->name('view-transactions');
-    Route::get('/pushnotification', 'sendnotification')->name('send-notification');
-    Route::get('/profile', 'adminprofile')->name('admin-profile');
-    Route::get('/settings', 'adminsettings')->name('admin-settings');
-    Route::get('/edituser', 'edituser')->name('edit-user');
+    Route::post('/payment/callback', [PaymentController::class, 'handleGatewayCallback']);
+    Route::post('/pay', [PaymentController::class, 'redirectToGateway'])->name('pay');
 });

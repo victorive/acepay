@@ -25,6 +25,22 @@
                 <input class="block w-full border rounded-md text-sm py-2 px-3 min-h-[39px] focus:border-[#70ce91] @error('lastname') border-red-500 @enderror" type="text" name="lastname" placeholder="Enter your last name" value="{{ old('lastname') }}">
 
                 <label class="block">
+                    <span class="block text-xs font-medium">Phone:</span>
+                </label>
+                @error('phone')
+                <span class="block text-xs font-medium text-red-500">{{ $message }}</span>
+                @enderror
+                <input class="block w-full border rounded-md text-sm py-2 px-3 min-h-[39px] focus:border-[#70ce91] @error('phone') border-red-500 @enderror" type="tel" name="phone" placeholder="Enter your phone number" value="{{ old('phone') }}">
+
+                <label class="block">
+                    <span class="block text-xs font-medium">Address:</span>
+                </label>
+                @error('address')
+                <span class="block text-xs font-medium text-red-500">{{ $message }}</span>
+                @enderror
+                <input class="block w-full border rounded-md text-sm py-2 px-3 min-h-[39px] focus:border-[#70ce91] @error('address') border-red-500 @enderror" type="ttelext" name="address" placeholder="Enter your address" value="{{ old('address') }}">
+
+                <label class="block">
                     <span class="block text-xs font-medium">Email address:</span>
                 </label>
                 @error('email')

@@ -6,9 +6,15 @@
     <div class="mx-auto px-4 py-20 max-w-7xl">
         <div class="w-full mx-auto px-0 pt-5 pb-6 mt-4 mb-0 space-y-4 border-0 border-gray-300 rounded-md bg-transparent md:bg-white md:border md:px-6 sm:mt-8 sm:mb-5 sm:w-10/12 md:w-8/12 lg:w-6/12 xl:w-4/12">
             <h1 class="text-xl mb-5 font-light sm:text-center">Login to your account</h1>
-            @if (session('message'))
+            @if (session('success'))
+            <p class="text-sm text-[#70ce91] md:text-center">
+                {{ session('success') }}
+            </p>
+            @endif
+
+            @if (session('failed'))
             <p class="text-sm text-red-500 md:text-center">
-                {{ session('message') }}
+                {{ session('failed') }}
             </p>
             @endif
 
