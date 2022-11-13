@@ -24,6 +24,7 @@ class CreateTransactionsTable extends Migration
             $table->string('channel');
             $table->string('gateway_response');
             $table->dateTime('paid_at');
+            $table->timestamps();
         });
     }
 
