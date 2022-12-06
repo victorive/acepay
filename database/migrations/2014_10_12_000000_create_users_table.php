@@ -18,7 +18,7 @@ class CreateUsersTable extends Migration
             $table->string('firstname');
             $table->string('lastname');
             $table->string('email')->unique();
-            $table->integer('phone');
+            $table->string('phone', 20);
             $table->string('address');
             $table->integer('token')->nullable();
             $table->dateTime('token_expires_at')->nullable();
